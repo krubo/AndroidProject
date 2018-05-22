@@ -1,7 +1,9 @@
 package com.ainanmu.android
 
+import android.database.sqlite.SQLiteDatabase
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.ainanmu.nmdb.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +14,29 @@ class MainActivity : AppCompatActivity() {
 
         // Example of a call to a native method
         sample_text.text = stringFromJNI()
+        DBManager.newInstance(
+                baseContext, "Persion", 1,
+                object : DBCallback {
+
+                    override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
+                        DBManager.createTable(sqLiteDatabase, Persion::class.java)
+                    }
+
+                    override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+                    }
+
+                }
+        )
+
+        var dao = PersionDao();
+        var persion = Persion();
+        persion.age = 15;
+        persion.name = "wangsi"
+        dao.insert(persion)
+        var persions = dao.queryAll()
+        for (persion in persions) {
+            println(persion.toString())
+        }
     }
 
     /**
@@ -26,5 +51,19 @@ class MainActivity : AppCompatActivity() {
         init {
             System.loadLibrary("native-lib")
         }
+    }
+
+    @DBTableName(tableName = "persion")
+    class Persion {
+        @DBField
+        var name = ""
+        @DBField
+        var age = 0
+
+        override fun toString() = "name:$name, age:$age"
+    }
+
+    class PersionDao : DBDao<Persion>(Persion::class.java) {
+
     }
 }

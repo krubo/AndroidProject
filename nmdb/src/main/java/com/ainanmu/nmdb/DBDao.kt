@@ -45,7 +45,8 @@ open class DBDao<T>(val cls: Class<T>) {
     /**
      * 根据条件取出数据
      */
-    fun query(selection: String?, selectionArgs: Array<String>?, groupBy: String?, having: String?, orderBy: String?): ArrayList<T> {
+    fun query(selection: String? = null, selectionArgs: Array<String>? = null,
+              groupBy: String? = null, having: String? = null, orderBy: String? = null): ArrayList<T> {
         var list = ArrayList<T>()
         DBManager.sqLiteDatabase!!.beginTransaction()
         var cursor: Cursor? = null
@@ -76,11 +77,6 @@ open class DBDao<T>(val cls: Class<T>) {
         cursor!!.close()
         return list
     }
-
-    /**
-     * 去除表中所有数据
-     */
-    fun queryAll() = query(null, null, null, null, null)
 
     /**
      * 修改单条数据

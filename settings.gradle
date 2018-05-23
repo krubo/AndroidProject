@@ -1,1 +1,1 @@
-include ':app', ':initxml', ':nmdb'
+include ':app', ':initxml', ':nmdb', ':nmbase'

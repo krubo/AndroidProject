@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
         dao.insert(persion)
         var persions = dao.query()
         for (persion in persions) {
-            println(persion.toString())
+            println(message = persion.toString())
+            v(log = persion.toString())
         }
 
         val str: String? = null

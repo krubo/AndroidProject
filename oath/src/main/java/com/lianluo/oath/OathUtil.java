@@ -6,5 +6,4 @@ package com.lianluo.oath;
 
 public class OathUtil {
 
-
 }
